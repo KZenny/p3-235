@@ -3,53 +3,65 @@
 /**
 * Default constructor
 * Default initializes P1_COLOR_ to "BLACK" and P2_COLOR_ to "WHITE"
-* Initializes ArrayBox members with capacity 64
+* * Initializes LinkedBox members with capacity 64
 */
-ChessBox::ChessBox() : P1_COLOR_{"BLACK"}, P2_COLOR_{"WHITE"}, P1_BOX_{ArrayBox<ChessPiece>()}, P2_BOX_{ArrayBox<ChessPiece>()} {}
+ChessBox::ChessBox() : P1_COLOR_{"BLACK"}, P2_COLOR_{"WHITE"}, P1_BOX_{LinkedBox<ChessPiece>()}, P2_BOX_{LinkedBox<ChessPiece>()} {}
 
 /**
 * Paramaterized Constructor
 * @param color1 A const reference to the color of the Chess Piece (a string)
 * @param color2 A const reference to the color of the Chess Piece (a string)
-* @param capacity An integer describing the capacity of each player's ArrayBox, with default capacity 64.
+* @param capacity An integer describing the 
+*                 capacity of each player's LinkedBox, with default capacity 64.
 * 
-* @note If either color1 or color2 contains non-alphabetic characters, set P1_COLOR_ to "BLACK" and P2_COLOR_ to "WHITE"
-*       Otherwise, if the string is purely alphabetic, it is converted and stored in uppercase.
-*       However, if the are equal, set color1 to "BLACK" and color2 to "WHITE"
-*
-*       If the specified capacity is not positive (ie. <= 0), 64 is used instead.
+* @note 1) If either color1 or color2 contains 
+*       non-alphabetic characters, set P1_COLOR_ to "BLACK" and P2_COLOR_ to "WHITE"
+*       2) Otherwise, if the string is purely alphabetic, 
+*          it is converted and stored in uppercase.* 
+*       3) However, if the are equal, set color1 to "BLACK" and color2 to "WHITE"
+*       4) If the specified capacity is not positive (ie. <= 0), 64 is used instead.
 * 
-* @post Initializes ArrayBox members with the specified capacity. All strings are initialized as described above. 
+* @post Initializes LinkedBox members with the specified capacity. 
+*       All strings are initialized as described above. 
 */
 ChessBox::ChessBox(const std::string& color1, const std::string& color2, int capacity) : 
-   P1_COLOR_{"BLACK"}, P2_COLOR_{"WHITE"}, P1_BOX_{ArrayBox<ChessPiece>(capacity)}, P2_BOX_{ArrayBox<ChessPiece>(capacity)} {
+   P1_COLOR_{"BLACK"}, P2_COLOR_{"WHITE"}, P1_BOX_{LinkedBox<ChessPiece>(capacity)}, P2_BOX_{LinkedBox<ChessPiece>(capacity)} {
 
       std::string color1_uppercase, color2_uppercase;
 
-      for (size_t i = 0; i < color1.size() && std::isalpha(color1[i]); i++) { color1_uppercase += std::toupper(color1[i]); } 
-      for (size_t i = 0; i < color2.size() && std::isalpha(color2[i]); i++) { color2_uppercase += std::toupper(color2[i]); } 
+      for (size_t i = 0; i < color1.size() && std::isalpha(color1[i]); i++) { 
+         color1_uppercase += std::toupper(color1[i]); 
+      } 
+      for (size_t i = 0; i < color2.size() && std::isalpha(color2[i]); i++) { 
+         color2_uppercase += std::toupper(color2[i]); 
+      } 
 
       // If all param characters are successfully converted to uppercase, we use it
-      if (color1_uppercase.size() != color1.size() || color2_uppercase.size() != color2.size()) { return; }
-      if (color1_uppercase == color2_uppercase) { return; }
+      if (color1_uppercase.size() != color1.size() || color2_uppercase.size() != color2.size()) { 
+         return; 
+      }
+      if (color1_uppercase == color2_uppercase) { 
+         return; 
+      }
 
       P1_COLOR_ = std::move(color1_uppercase);
       P2_COLOR_ = std::move(color2_uppercase);
 }
 
 /**
-* @brief Adds a given ChessPiece object to the ArrayBox corresponding to its color:
-*      - If the color of the given piece matches P1_COLOR_, add it to P1_BOX_
-*      - If the color of the given piece matches P2_COLOR_, add it to P2_BOX_
-*      - If the color does not match either box, or the corresponding box doesn't have
-*           enough remaining space to add the piece, the add operation fails.
-* 
-* @param piece A const reference to a ChessPiece object that is to be added to one of the ArrayBoxes
-* @return True if the piece was added successfully. False otherwise.
-*
-*/
+ * @brief Adds a given ChessPiece object to the LinkedBox corresponding to its color:
+ *      - If the color of the given piece matches P1_COLOR_, add it to P1_BOX_
+ *      - If the color of the given piece matches P2_COLOR_, add it to P2_BOX_
+ *      - If the color does not match either box, or the corresponding 
+ *           box doesn't have enough remaining space to add the piece, 
+ *           the add operation fails.
+ * 
+ * @param piece A const reference to a ChessPiece object that is to be added to one of the LinkedBoxes
+ * @return True if the piece was added successfully. False otherwise.
+ *
+ */
 bool ChessBox::addPiece(const ChessPiece& piece) {
-   ArrayBox<ChessPiece>* match = nullptr;
+   LinkedBox<ChessPiece>* match = nullptr;
    
    if (piece.getColor() == P1_COLOR_) { 
       match = &P1_BOX_;
@@ -69,7 +81,7 @@ bool ChessBox::addPiece(const ChessPiece& piece) {
 * @return True if a piece is found and removed. False otherwise. 
 */
 bool ChessBox::removePiece(const std::string& type, const std::string& color) {
-   ArrayBox<ChessPiece>* match = nullptr;
+   LinkedBox<ChessPiece>* match = nullptr;
    
    if (color == P1_COLOR_) { 
       match = &P1_BOX_;
@@ -97,7 +109,7 @@ bool ChessBox::contains(const std::string& type, const std::string &color) const
 * @brief Getter for P1_BOX
 * @return The ArrayBox<ChessPiece> (ie. the value) of P1_BOX_
 */
-ArrayBox<ChessPiece> ChessBox::getP1Pieces() const {
+LinkedBox<ChessPiece> ChessBox::getP1Pieces() const {
    return P1_BOX_;
 }
 
@@ -105,7 +117,7 @@ ArrayBox<ChessPiece> ChessBox::getP1Pieces() const {
 * @brief Getter for P2_BOX
 * @return The ArrayBox<ChessPiece> (ie. the value) of P2_BOX_
 */
-ArrayBox<ChessPiece> ChessBox::getP2Pieces() const {
+LinkedBox<ChessPiece> ChessBox::getP2Pieces() const {
    return P2_BOX_;
 }
 

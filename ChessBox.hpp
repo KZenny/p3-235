@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ArrayBox.hpp"
+#include "LinkedBox.hpp"
 #include "ChessPiece.hpp"
 #include <cctype>
 #include <utility>
@@ -8,13 +8,13 @@
 class ChessBox {
     private: 
         std::string P1_COLOR_, P2_COLOR_;
-        ArrayBox<ChessPiece> P1_BOX_, P2_BOX_;
+        LinkedBox<ChessPiece> P1_BOX_, P2_BOX_;
 
     public:
         /**
          * Default constructor
          * Default initializes P1_COLOR_ to "BLACK" and P2_COLOR_ to "WHITE"
-         * Initializes ArrayBox members with capacity 64
+         * Initializes LinkedBox members with capacity 64
          */
         ChessBox();
 
@@ -81,11 +81,11 @@ class ChessBox {
          * @brief Getter for P1_BOX
          * @return The ArrayBox<ChessPiece> (ie. the value) of P1_BOX_
          */
-        ArrayBox<ChessPiece> getP1Pieces() const;
+        LinkedBox<ChessPiece> getP1Pieces() const;
 
         /**
          * @brief Getter for P2_BOX
          * @return The ArrayBox<ChessPiece> (ie. the value) of P2_BOX_
          */
-        ArrayBox<ChessPiece> getP2Pieces() const;
+        LinkedBox<ChessPiece> getP2Pieces() const;
 };
